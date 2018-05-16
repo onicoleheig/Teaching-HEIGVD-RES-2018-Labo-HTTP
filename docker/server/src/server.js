@@ -1,16 +1,16 @@
-{
-  "name": "HTTP-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Olivier Nicole",
-  "contributors": [
-    "Lionel Nanchen"
-  ],
-  "license": "ISC",
-  "dependencies": {
-  }
-}
+var protocol = require('./protocol');
+
+var moment = require('moment');
+var express = require('express');
+var srv = express();
+
+console.log("Waiting connection on port : " + protocol.PORT);
+
+//when someone get /, return the current time
+srv.get('/', (request, response) => {
+    response.json({
+        "Current time": moment().format('LT')
+    });
+})
+
+srv.listen(protocol.PORT);
