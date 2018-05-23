@@ -1,19 +1,21 @@
 var protocol = require('./protocol');
 
-var net = require('net');
+const http = require('http');
 
-var client = new net.Socket();
+//get request
+http.get('http://' + protocol.IP + ':' + protocol.PORT, (resp) => {
+    let data = '';
 
-client.connect(protocol.PORT, protocol.IP, function() {
-    console.log('Client connected');
-    client.write("GET / HTTP/1.1 \r\n\r\n");
-});
+    //a chunk of a data is received
+    resp.on('data', (chunk) => {
+        data += chunk;
+    });
 
-client.on('data', function(data) {
-    console.log('Data received : : ' + data);
-    client.destroy();
-});
+    //the response is received, show it to the terminal
+    resp.on('end', () => {
+        console.log(data);
+    });
 
-client.on('close', function() {
-    console.log('Connection closed');
+}).on("error", (err) => {
+    console.log("Error ! : " + err.message);
 });
