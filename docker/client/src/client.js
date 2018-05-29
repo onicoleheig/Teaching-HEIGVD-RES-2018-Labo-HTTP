@@ -37,6 +37,15 @@ request.post({
     console.log(body);
 });
 
+request.get('http://' + protocol.IP + ':' + protocol.PORT, function(error , response, body){
+    if(error)
+        if(res.statusCode !== 200 ) console.log('Error :') //etc
+
+    //Request body..
+    console.log("GET REQUEST : ");
+    console.log(body);
+});
+
 
 
 /* the old one...
