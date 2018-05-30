@@ -5,7 +5,6 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var srv = express();
 
-var date = new Date();
 var diff = 0;
 
 srv.use(bodyParser.urlencoded({ extended: false }));
@@ -15,9 +14,31 @@ console.log("Waiting connection on port : " + protocol.PORT);
 
 //when someone get /, return the current time
 srv.get('/', (request, response) => {
-    response.json({
-        "Current time": moment().add(diff).format('LTS')
-    });
+    console.log("GET");
+
+    switch(request.headers['content-type']) {
+        case 'application/json':
+            console.log("content-type -> json");
+            response.json({
+                "Current time": moment().add(diff).format('LTS')
+            });
+            break;
+        case 'text/html':
+            console.log("content-type -> html");
+            response.send("<html>\n" +
+                "<header></header>\n" +
+                "\t<body>\n" +
+                "\t\t<div>" + moment().add(diff).format('LTS') + "</div>\n" +
+                "\t</body>\n" +
+                "</html>");
+            break;
+        case 'text/xml':
+            console.log("content-type -> xml");
+            response.send("<time>" + moment().add(diff).format('LTS') + "</time>");
+            break;
+        default:
+            console.log("content type not recognised");
+    }
 });
 
 //when someone get /, return the current time
@@ -27,10 +48,8 @@ srv.post('/', (request, response) => {
     currentDate = moment();
     diff = postDate.diff(currentDate);
 
-    date = moment().add(diff);
-
     response.json({
-        "Current time": date.format('LTS')
+        "Current time": moment().add(diff).format('LTS')
     });
 });
 
