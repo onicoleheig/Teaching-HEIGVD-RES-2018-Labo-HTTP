@@ -2,7 +2,7 @@ var protocol = require('./protocol');
 
 var moment = require('moment');
 var bodyParser = require('body-parser');
-require('body-parser-xml')(bodyParser);
+require('body-parser-xml')(bodyParser); //add middleware
 var express = require('express');
 var srv = express();
 
@@ -61,6 +61,7 @@ srv.post('/', (request, response) => {
             });
             break;
         case 'text/xml':
+            console.log("content-type -> xml");
             response.json({
                 "Current-time": moment().add(diff).format('LTS')
             });
