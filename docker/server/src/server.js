@@ -16,7 +16,7 @@ console.log("Waiting connection on port : " + protocol.PORT);
 
 //when someone get /, return the current time
 srv.get('/', (request, response) => {
-    console.log("GET " + request.body);
+    console.log("GET ");
 
     switch(request.headers['accept']) {
         case 'application/json':
@@ -45,26 +45,25 @@ srv.get('/', (request, response) => {
 
 //when someone get /, return the current time
 srv.post('/', (request, response) => {
-    console.log("POST " + request.body);
+    console.log("POST ");
+
+    //traitement de la date
+    postDate = moment(request.body.time);
+    currentDate = moment();
+    diff = postDate.diff(currentDate);
 
     switch(request.headers['content-type']) {
+
         case 'application/json':
             console.log("content-type -> json");
-            postDate = moment(request.body.json.time);
-            currentDate = moment();
-            diff = postDate.diff(currentDate);
-
             response.json({
                 "Current-time": moment().add(diff).format('LTS')
             });
-
-            console.log(request.body, request.text);
             break;
         case 'text/xml':
-            console.log("content-type -> xml");
-            console.log(request.body);
-
-            response.send("TEST");
+            response.json({
+                "Current-time": moment().add(diff).format('LTS')
+            });
             break;
         default:
             console.log("POST : content type not recognised");

@@ -73,9 +73,7 @@ request(optionsGetXml, function(error , response, body){
 
 //############################## TEST JSON ##############################
 
-var dataJson = {
-    json: { time: moment().add(2, 'hours') }
-}
+var dataJson = { time: moment().add(2, 'hours')}
 
 const optionsPostJson = {
     url: 'http://' + protocol.IP + ':' + protocol.PORT,
